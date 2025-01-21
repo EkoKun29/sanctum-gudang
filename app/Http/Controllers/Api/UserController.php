@@ -50,4 +50,9 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function logout(Request $request){
+        $request->user()->tokens()->delete();
+        return send_ms('User Logout',true,200);
+    }
 }
