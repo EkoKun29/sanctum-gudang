@@ -12,7 +12,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:sync-penjualan-data')->everyMinute();
+        $schedule->command('app:sync-penjualan-data')
+            ->everyMinute()
+            ->appendOutputTo(storage_path('logs/sync-penjualan.log'));
+
+        $schedule->command('app:coba-data')
+            ->everyMinute()
+            ->appendOutputTo(storage_path('logs/coba-data.log'));
+
     }
 
     /**
