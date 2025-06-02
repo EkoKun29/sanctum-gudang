@@ -19,6 +19,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:coba-data')
             ->everyMinute()
             ->appendOutputTo(storage_path('logs/coba-data.log'));
+        
+        $schedule->command('app:sync-hpp-data')
+            ->everyMinute()
+            ->appendOutputTo(storage_path('logs/sync-hpp.log'));
 
     }
 
