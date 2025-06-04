@@ -38,7 +38,13 @@ class SyncHppData extends Command
             $data = collect($response->json());
 
             $this->info("Jumlah data dari API: " . $data->count());
+            $tanggalTerakhir = Hpp::max('tanggal');
+            if (!$tanggalTerakhir) {
+                $tanggalTerakhir = '2000-01-01'; // jika belum ada data
+            }
 
+            $this->info("Tanggal terakhir di database: " . $tanggalTerakhir);
+            
             foreach ($data as $item) {
                 $this->info("Memproses data: " . json_encode($item));
 

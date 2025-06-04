@@ -26,12 +26,23 @@ class SyncPenjualanData extends Command
             $data = collect($response->json());
 
             $this->info("Jumlah data dari API: " . $data->count());
+            $tanggalTerakhir = HargaKonsumen::max('tanggal');
+            if (!$tanggalTerakhir) {
+                $tanggalTerakhir = '2000-01-01'; // jika belum ada data
+            }
+
+            $this->info("Tanggal terakhir di database: " . $tanggalTerakhir);
 
             foreach ($data as $item) {
                 $this->info("Memproses data: " . json_encode($item));
 
                 try {
                     $tanggal = Carbon::createFromFormat('d-m-Y', $item['tanggal'])->format('Y-m-d');
+                    
+                    if ($tanggal <= $tanggalTerakhir) {
+                        $this->info("Lewati data lama: " . $item['tanggal'] . " - " . $item['nama_barang']);
+                        continue;
+                    }
 
                     $exists = HargaKonsumen::where('tanggal', $tanggal)
                         ->where('nama_konsumen', $item['nama_konsumen'])
