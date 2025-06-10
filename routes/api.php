@@ -15,13 +15,14 @@ use App\Http\Controllers\Api\UserController;
 |
 */
 
+Route::get('/hpp', [App\Http\Controllers\HppController::class, 'index']);
+Route::get('/harga-konsumen', [App\Http\Controllers\HargaKonsumenController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::get('/hpp', [App\Http\Controllers\HppController::class, 'index']);
-    Route::get('/harga-konsumen', [App\Http\Controllers\HargaKonsumenController::class, 'index']);
+    
 
 });
 
