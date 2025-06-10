@@ -23,14 +23,18 @@ class HargaKonsumenController extends Controller
                 $q->whereRaw("CONCAT_WS(' ', sales, tanggal, nama_konsumen, nama_barang, harga_jual) LIKE ?", ["%$word%"]);
             }
         });
+
+        // ✅ Jika ada pencarian, ambil semua hasil tanpa limit
+        $data = $query->orderBy('created_at', 'desc')->get();
+    } else {
+        // ✅ Kalau tidak ada pencarian, pakai pagination
+        $data = $query->orderBy('created_at', 'desc')
+                      ->offset($offset)
+                      ->limit($limit)
+                      ->get();
     }
 
     $total = $query->count();
-
-    $data = $query->orderBy('created_at', 'desc')
-                  ->offset($offset)
-                  ->limit($limit)
-                  ->get();
 
     return response()->json([
         'data' => $data,
@@ -39,6 +43,7 @@ class HargaKonsumenController extends Controller
         'total' => $total,
     ]);
 }
+
 
 
 }
